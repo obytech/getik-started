@@ -1,0 +1,77 @@
+
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: "Getting started w/spring boot, actuator, mongo"
+  description: "Getting started w/spring boot, actuator, mongo"
+  termsOfService: "terms"
+  contact: 
+    name: "Oren"
+    url: "http://www.tikalk.com/"
+    email: "orenb123@tikalk.com"
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+schemes:
+  - http
+basePath: /
+paths:  
+  /Employee/{id}:
+    get:
+      summary: Get an employee
+      description: Retrieve an employee for given id.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: id of the employee
+          type: string
+      responses:
+        200:
+          description: Get the employee data
+          schema:
+            $ref: "#/definitions/Employee"
+        404:
+          description: No employee found for id.
+      
+  /Employee/:
+    post:
+      produces: 
+        - "application/json"
+      description: Create new employee
+      parameters:
+        - name: employee
+          description: Employee to create
+          in: body
+          schema:
+            $ref: "#/definitions/Employee"
+      responses:
+        406:
+          description: Could't create employee - alreay exist.
+        201: 
+          description: created
+          schema:
+            required:
+              - EmployeeId
+            properties:
+              EmployeeId:
+                type: string
+              
+  
+
+
+
+definitions:
+  Employee:
+    required: 
+      - firstName
+      - lastName
+      - profession
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      profession:
+        type: string
+    

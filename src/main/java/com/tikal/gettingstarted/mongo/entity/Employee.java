@@ -4,17 +4,23 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Document(collection = "CustomEmployee")
 public class Employee {
 
 	@Id
+	@ApiModelProperty(hidden = true)
 	private String id;
 	
+	@ApiModelProperty(notes = "Employee's first name", required = true)
 	private String firstName;
 	
 	@Field("Custom_last_name")
+	@ApiModelProperty(notes = "Employee's last name", required = true)
 	private String lastName;
 	
+	@ApiModelProperty(notes = "Employee's profession", required = true)
 	private String profession;
 	
 	public Employee() {

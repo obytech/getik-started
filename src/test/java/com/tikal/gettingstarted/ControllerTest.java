@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -22,7 +23,8 @@ import com.tikal.gettingstarted.mongo.entity.Employee;
 @SpringBootTest(classes = GettingstartedApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ControllerTest {
 
-	private TestRestTemplate restTemplate = new TestRestTemplate();
+	@Autowired
+	private TestRestTemplate restTemplate;
 
 	@LocalServerPort
 	private int serverPort;
@@ -49,8 +51,8 @@ public class ControllerTest {
 		Mockito.when(dao.save(employee)).thenReturn(mocked);
 		
 		ResponseEntity<String> response = restTemplate.postForEntity(target, employee, String.class);
-		Assert.assertTrue(response.getStatusCode() == HttpStatus.CREATED);
-		Assert.assertTrue(response.getBody().equals(generatedId));
+		Assert.assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		Assert.assertEquals("/Employee/" + generatedId, response.getBody());
 	}
 	
 	@Test
