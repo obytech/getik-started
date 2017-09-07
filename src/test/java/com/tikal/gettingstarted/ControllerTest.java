@@ -1,6 +1,8 @@
 package com.tikal.gettingstarted;
 
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,6 +50,7 @@ public class ControllerTest {
 		String generatedId = "123456";
 		Employee employee = new Employee("test f", "test l", "super tester");
 		mocked.setId(generatedId);
+		Mockito.when(dao.findByFirstNameAndLastName(employee.getFirstName(), employee.getLastName())).thenReturn(Optional.empty());
 		Mockito.when(dao.save(employee)).thenReturn(mocked);
 		
 		ResponseEntity<String> response = restTemplate.postForEntity(target, employee, String.class);
@@ -58,7 +61,7 @@ public class ControllerTest {
 	@Test
 	public void testEmployeeCreationFailure() throws Exception {
 		Employee employee = new Employee("test f", "test l", "failure gen");
-		Mockito.when(dao.findByFirstNameAndLastName(employee.getFirstName(), employee.getLastName())).thenReturn(employee);
+		Mockito.when(dao.findByFirstNameAndLastName(employee.getFirstName(), employee.getLastName())).thenReturn(Optional.of(employee));
 		
 		ResponseEntity<String> response = restTemplate.postForEntity(target, employee, String.class);
 		Assert.assertTrue(response.getStatusCode() == HttpStatus.NOT_ACCEPTABLE);

@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,12 +18,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.tikal.gettingstarted.GettingstartedApplication;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = GettingstartedApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = GettingstartedApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT, properties = {"management.port=" + TestActuator.ACTUATOR_PORT})
 public class TestActuator {
+	protected static final int ACTUATOR_PORT = 28080;
 	
-	private static final String ACTUATOR_URI = "http://localhost:18080/actuator/";
+	private static final String ACTUATOR_URI = "http://localhost:" + ACTUATOR_PORT + "/actuator/";
 
-	private TestRestTemplate restTemplate = new TestRestTemplate();
+	@Autowired
+	private TestRestTemplate restTemplate;
 
 	@Test
 	public void testOneTimeRandom() {

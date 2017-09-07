@@ -1,5 +1,7 @@
 package com.tikal.gettingstarted;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +24,7 @@ public class TestEmployeeDao {
 		Employee employee = new Employee("Test", "Testy", "Super tester");
 		employee = employeeDao.insert(employee);
 		
-		Employee byName = employeeDao.findByFirstNameAndLastName(employee.getFirstName(), employee.getLastName());
-		Assert.assertNotNull(byName);
-		
-		byName = employeeDao.findByFirstNameAndLastName(employee.getLastName(), employee.getFirstName());
-		Assert.assertNull(byName);
+		Optional<Employee> byName = employeeDao.findByFirstNameAndLastName(employee.getFirstName(), employee.getLastName());
+		Assert.assertTrue(byName.isPresent());
 	}
 }

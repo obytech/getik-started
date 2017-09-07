@@ -3,12 +3,11 @@ package com.tikal.gettingstarted.config.swagger;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.tikal.gettingstarted.controllers.SwagMe;
-
-import springfox.documentation.builders.PathSelectors;
+import io.swagger.annotations.Api;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
@@ -18,15 +17,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+	
+	@Value("${swagger.host}")
+	private String host;
 
 	@Bean
 	public Docket employeeApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
-				.host("tikalk.com:8080")
+				.host(host)
 				.protocols(Collections.singleton("http"))
 				.select()
-				.apis(handler -> handler.findControllerAnnotation(SwagMe.class).isPresent())
-				.paths(PathSelectors.regex("/Employee.*"))
+				.apis(handler -> handler.findControllerAnnotation(Api.class).isPresent())
+//				.paths(PathSelectors.regex("/Employee.*"))
 				.build()
 				.apiInfo(getMetadata());
 	}
